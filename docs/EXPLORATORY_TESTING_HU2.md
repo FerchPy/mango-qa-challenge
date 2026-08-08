@@ -33,14 +33,15 @@
 
 ## 5. Reporte de Defectos (Bugs) e Incidentes (HU_2)
 
-### 🐛 Bug 1: Ausencia de redirección automática y persistencia de formulario tras un registro exitoso
+### 🐛 Bug 1: Ausencia de redirección tras registro e inicio de sesión en la pantalla de registro
 * **Pasos para reproducir:**
   1. Navegar a la pantalla de registro (`/register`).
-  2. Completar todos los campos obligatorios del formulario con datos válidos.
-  3. Hacer clic en el botón **"Register"**.
-* **Resultado esperado:** Tras mostrar el mensaje de confirmación de registro exitoso (*"Registration is successful"*), la aplicación debería limpiar los campos del formulario y redirigir automáticamente al usuario a la página de inicio (`/`) o habilitar la vista de login.
-* **Resultado actual:** La aplicación muestra el mensaje de éxito en la cabecera, pero el formulario permanece estático en la pantalla manteniendo los datos ingresados. El usuario se ve obligado a hacer clic manualmente en la marca principal del menú (`Buggy Rating`) para navegar a la página de inicio.
-* **Impacto:** **Medio** – Afecta la experiencia de usuario (UX) al requerir una interacción manual extra para salir del flujo de registro y deja expuestas las credenciales ingresadas en la pantalla si el usuario no navega hacia otra sección.
+  2. Completar todos los campos obligatorios con datos válidos y presionar **"Register"**.
+  3. Visualizar el mensaje de confirmación de registro exitoso (*"Registration is successful"*).
+  4. En la barra superior (menú de navegación), ingresar el usuario y contraseña recién creados y hacer clic en **"Login"**.
+* **Resultado esperado:** Al autenticarse correctamente, el sistema debería redirigir al usuario automáticamente a la página principal (`/`) habilitando el dashboard/listado general.
+* **Resultado actual:** El inicio de sesión se procesa correctamente (aparece *"Hi, [Usuario]"* en la barra superior), pero la aplicación no redirige y mantiene al usuario logueado en la URL `/register` con el formulario limpio. El usuario se ve obligado a hacer clic manualmente en la marca principal del menú (`Buggy Rating`) para ir al inicio.
+* **Impacto:** **Medio** – Flujo de usuario interrumpido. Genera confusión al mantener una vista de formulario de registro activa para una sesión que ya se encuentra autenticada.
 
 ### ⚠️ Incidente / Issue 1: Falta de paginación en la tabla de comentarios
 * **Observación:** Cuando un vehículo acumula una cantidad alta de reseñas, la tabla de comentarios aumenta considerablemente su altura vertical sin presentar controles claros de paginación, lo que degrada la navegación en la vista del detalle.
