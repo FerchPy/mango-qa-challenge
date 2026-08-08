@@ -19,5 +19,5 @@ Este repositorio contiene la solución de automatización de pruebas E2E desarro
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/FerchPy/mango-qa-challenge.git](https://github.com/FerchPy/mango-qa-challenge.git)
+   git clone https://github.com/FerchPy/mango-qa-challenge.git
    cd mango-qa-challenge
