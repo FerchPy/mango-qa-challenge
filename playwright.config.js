@@ -8,7 +8,7 @@ module.exports = defineConfig({
     /* Tiempo máximo para que se cumpla una aserción/expectativa (15 segundos) */
     timeout: 15000,
   },
-  fullyParallel: true,
+  fullyParallel: false,
   /* Genera el reporte HTML con las capturas de pantalla integradas para evidencia */
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],

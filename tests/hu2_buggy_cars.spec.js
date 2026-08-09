@@ -13,39 +13,33 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await page.click('a[href="/overall"]');
     await page.waitForURL('**/overall');
     
-    // Opción A: Selecciona de forma semántica el enlace "View more" de la primera fila
+    // 2. Navegar al detalle del primer modelo
     const firstModelLink = page.locator('table tbody tr').first().getByRole('link', { name: 'View more' });
     await expect(firstModelLink).toBeVisible({ timeout: 15000 });
-
-    // 2. Navegar al detalle del modelo
     await firstModelLink.click();
     await page.waitForURL('**/model/**');
 
-    // --- REQUISITO: Validaciones de la vista del auto seleccionado ---
+    // --- Validaciones de la vista del auto seleccionado ---
     
     // a. Descripción / Ficha del Auto
     const carDescriptionCard = page.locator('.card').first();
     await expect(carDescriptionCard).toBeVisible({ timeout: 15000 });
 
-    // b. Tarjeta de Especificación (Specification)
+    // b. Especificación (Specification)
     const specCard = page.locator('.card', { hasText: 'Specification' });
     await expect(specCard).toBeVisible({ timeout: 15000 });
     await expect(specCard).toContainText('Engine');
     await expect(specCard).toContainText('Max Speed');
 
-    // c. Cantidad total de votos
+    // c. Cantidad total de votos (Valida que "Votes:" esté visible y contenga una cantidad numérica, ej: "Votes: 12")
     const votesHeader = page.locator('h4', { hasText: 'Votes:' });
     await expect(votesHeader).toBeVisible();
-    await expect(votesHeader).toContainText('Votes:');
+    await expect(votesHeader).toContainText(/Votes:\s*\d+/);
 
-    // --- Controles de usuario invitado ---
-    const voteButton = page.locator('button:has-text("Vote!")');
-    const commentInput = page.locator('textarea#comment');
-    
-    await expect(voteButton).not.toBeVisible();
-    await expect(commentInput).not.toBeVisible();
+    // --- Controles restringidos a invitados ---
+    await expect(page.locator('button:has-text("Vote!")')).not.toBeVisible();
+    await expect(page.locator('textarea#comment')).not.toBeVisible();
 
-    // Mensaje de aviso informativo
     const infoMessage = page.locator('p.card-text');
     await expect(infoMessage).toContainText('You need to be logged in to vote');
 
@@ -70,11 +64,9 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await page.fill('#lastName', 'Tester');
     await page.fill('#password', password);
     await page.fill('#confirmPassword', password);
-
     await page.click('button[type="submit"]:has-text("Register")');
 
-    const alertSuccess = page.locator('.alert-success');
-    await expect(alertSuccess).toContainText('Registration is successful', { timeout: 15000 });
+    await expect(page.locator('.alert-success')).toContainText('Registration is successful', { timeout: 15000 });
 
     // 2. Login
     await page.fill('input[name="login"]', dynamicUser);
@@ -84,10 +76,9 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await page.click('a.navbar-brand');
     await page.waitForURL('**/');
 
-    const userGreeting = page.locator('span:has-text("Hi,")');
-    await expect(userGreeting).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('span:has-text("Hi,")')).toBeVisible({ timeout: 15000 });
 
-    // 3. Navegación al auto usando la Opción A
+    // 3. Navegación al auto
     await page.click('a[href="/overall"]');
     await page.waitForURL('**/overall');
 
@@ -105,9 +96,8 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await expect(voteButton).toBeVisible();
     await voteButton.click();
 
-    // Aserción final
-    const thankYouNotice = page.locator('p.card-text');
-    await expect(thankYouNotice).toContainText('Thank you for your vote!', { timeout: 15000 });
+    // Confirmación
+    await expect(page.locator('p.card-text')).toContainText('Thank you for your vote!', { timeout: 15000 });
   });
 
   test('TC_WEB_003: [Autenticado] Voto exitoso SIN ingresar comentario (Campo Opcional)', async ({ page }) => {
@@ -124,11 +114,9 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await page.fill('#lastName', 'NoComment');
     await page.fill('#password', password);
     await page.fill('#confirmPassword', password);
-
     await page.click('button[type="submit"]:has-text("Register")');
 
-    const alertSuccess = page.locator('.alert-success');
-    await expect(alertSuccess).toContainText('Registration is successful', { timeout: 15000 });
+    await expect(page.locator('.alert-success')).toContainText('Registration is successful', { timeout: 15000 });
 
     // 2. Login
     await page.fill('input[name="login"]', dynamicUser);
@@ -138,10 +126,9 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await page.click('a.navbar-brand');
     await page.waitForURL('**/');
 
-    const userGreeting = page.locator('span:has-text("Hi,")');
-    await expect(userGreeting).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('span:has-text("Hi,")')).toBeVisible({ timeout: 15000 });
 
-    // 3. Navegación al auto usando la Opción A
+    // 3. Navegación al auto
     await page.click('a[href="/overall"]');
     await page.waitForURL('**/overall');
 
@@ -150,14 +137,13 @@ test.describe('HU_2: Suite Automatizada E2E - Buggy Cars Rating', () => {
     await firstModelLink.click();
     await page.waitForURL('**/model/**');
 
-    // 4. Voto SIN llenar el textarea (se deja vacío deliberadamente)
+    // 4. Voto SIN llenar el textarea
     const voteButton = page.locator('button:has-text("Vote!")');
     await expect(voteButton).toBeVisible({ timeout: 15000 });
     await voteButton.click();
 
-    // 5. Confirmar que el voto fue aceptado correctamente
-    const thankYouNotice = page.locator('p.card-text');
-    await expect(thankYouNotice).toContainText('Thank you for your vote!', { timeout: 15000 });
+    // Confirmación
+    await expect(page.locator('p.card-text')).toContainText('Thank you for your vote!', { timeout: 15000 });
   });
 
 });

@@ -2,7 +2,7 @@
 
 **Módulo:** HU_2 - Detalle del Vehículo, Especificaciones y Votación  
 **Proyecto:** Buggy Cars Rating  
-**QA Lead / Analyst:** José Fernando Paniagua Benitez  
+**QA Analyst:** José Fernando Paniagua Benitez  
 
 ---
 
